@@ -40,9 +40,11 @@ public class AccountController {
 		account.setPassword(request.getParameter("password"));
 		account.setEmailAddress(request.getParameter("emailAddress"));
 		if (accountService.checkUsernameExist(account.getUsername())) {
-			return ResponseEntity.ok("此使用者名稱已註冊");
+			return ResponseEntity.ok("此使用者名稱已註冊，請重新輸入: " + account.getUsername());
+		} else if (accountService.insert(account)) {
+			return ResponseEntity.ok(account.getUsername() + "註冊成功");
 		} else {
-			return ResponseEntity.ok(accountService.save(account));
+			return ResponseEntity.ok(account.getUsername() + "註冊失敗");
 		}
 	}
 	

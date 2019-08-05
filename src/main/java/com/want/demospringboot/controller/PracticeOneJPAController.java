@@ -22,8 +22,8 @@ public class PracticeOneJPAController {
 	}
 	
 	@RequestMapping("/save")
-	public AccountDTO save(AccountDTO account) {
-		return accountService.save(account);
+	public Boolean save(AccountDTO account) {
+		return accountService.insert(account);
 	}
 	
 	@RequestMapping("/delete")

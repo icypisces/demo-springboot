@@ -12,7 +12,7 @@ public interface AccountService {
 	
 	public List<AccountDTO> list();
 	
-	public AccountDTO save(AccountDTO account);
+	public Boolean insert(AccountDTO account);
 	
 	public void delete(Long id);
 	
