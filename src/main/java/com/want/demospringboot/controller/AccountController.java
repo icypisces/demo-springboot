@@ -27,6 +27,7 @@ public class AccountController {
 	@Autowired
 	private AccountServiceImpl accountService;
 	
+	@SuppressWarnings("rawtypes")
 	@ApiOperation(value = "註冊", notes = "註冊帳號")
 	@PostMapping("/signUp")
 	@ApiImplicitParams({
