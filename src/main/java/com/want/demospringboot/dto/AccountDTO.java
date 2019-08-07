@@ -1,34 +1,34 @@
 package com.want.demospringboot.dto;
 
-//import javax.persistence.Column;
-//import javax.persistence.Entity;
-//import javax.persistence.GeneratedValue;
-//import javax.persistence.GenerationType;
-//import javax.persistence.Id;
-//import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-//@Entity
-//@Table(name = "account")
+@Entity
+@Table(name = "account")
 @ApiModel(value = "UserAcount")
 public class AccountDTO {
 
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@ApiModelProperty(value = "id", hidden = true)
 	private Long id;
 
-//	@Column(name = "user_name")
+	@Column(name = "user_name")
 	@ApiModelProperty(value = "使用者帳號")
 	private String username;
 
-//	@Column(name = "password")
+	@Column(name = "password")
 	@ApiModelProperty(value = "使用者密碼", hidden = true)
 	private String password;
 
-//	@Column(name = "email_Address")
+	@Column(name = "email_Address")
 	@ApiModelProperty(value = "使用者Email")
 	private String emailAddress;
 

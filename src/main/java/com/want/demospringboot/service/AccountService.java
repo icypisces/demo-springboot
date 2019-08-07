@@ -2,6 +2,7 @@ package com.want.demospringboot.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.want.demospringboot.dto.AccountDTO;
@@ -10,7 +11,7 @@ import com.want.demospringboot.dto.LoginUserInfo;
 @Service
 public interface AccountService {
 	
-	public List<AccountDTO> list();
+	public Iterable<AccountDTO> list(Pageable pageable);
 	
 	public Boolean insert(AccountDTO account);
 	

@@ -4,8 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.want.demospringboot.dao.AccountDAO;
 import com.want.demospringboot.dto.AccountDTO;
 import com.want.demospringboot.dto.LoginUserInfo;
 import com.want.demospringboot.mapper.AccountMapper;
@@ -21,9 +24,13 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	private AccountMapper accountMapper;
 	
+	@Autowired
+	private AccountDAO accountDAO;
+	
 	@Override
-	public List<AccountDTO> list() {
-		return accountMapper.queryAllAccount();
+	public Iterable<AccountDTO> list(Pageable pageable) {
+		return accountDAO.findAll(pageable);
+//		return accountMapper.queryAllAccount();
 	}
 	
 	@Override
