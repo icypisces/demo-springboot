@@ -1,11 +1,15 @@
 package com.want.demospringboot.serviceImpl;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.want.demospringboot.dao.AccountDAO;
@@ -44,32 +48,51 @@ public class AccountServiceImpl implements AccountService {
 //		accountDAO.deleteById(id);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
-	public LoginUserInfo signIn(String username, String password) {
-		Long id = accountMapper.getId(username,password);
-		LoginUserInfo loginUserDTO = new LoginUserInfo();
-		if (id != null) {
-			String jwt = 
-					Jwts.builder()
+	public ResponseEntity signUp(String username, String password, String emailAddress) {
+		AccountDTO account = new AccountDTO();
+		account.setUsername(username);
+		account.setPassword(password);
+		account.setEmailAddress(emailAddress);
+		if (accountMapper.checkUsernameExist(account.getUsername()) > 0) {
+			return ResponseEntity.ok("此使用者名稱已註冊，請重新輸入: " + account.getUsername());
+		} else if (accountMapper.insert(account) == 1 ) {
+			return ResponseEntity.ok(account.getUsername() + "註冊成功");
+		} else {
+			return ResponseEntity.ok(account.getUsername() + "註冊失敗");
+		}
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseEntity signIn(String username, String password) {
+		Map<String, Object> result = new HashMap<>();
+		AccountDTO account = accountMapper.queryUserInfoByUsername(username);
+		if (account == null) {
+			result.put("status", false);
+			result.put("msg", "帳號錯誤");
+		} else if (!password.equals(account.getPassword())){
+			result.put("status", false);
+			result.put("msg", "密碼錯誤");
+		} else {
+			LoginUserInfo loginUserDTO = new LoginUserInfo();
+			Long id = account.getId();
+			String jwt = Jwts.builder()
 								.setSubject(String.valueOf(id))
 								.setExpiration(new Date(System.currentTimeMillis() + CommonConstant.EXPIRATION_TIME))
 								.signWith(SignatureAlgorithm.HS512, CommonConstant.SECRET_KEY)
 								.compact();
 			loginUserDTO.setJwt(jwt);
 			loginUserDTO.setUsername(username);
-			loginUserDTO.setId(id);
+			result.put("status", true);
+			result.put("loginUserInfo", loginUserDTO);
 		}
-		return loginUserDTO;
+		return ResponseEntity.ok(result);
 	}
 	
 	@Override
-	public AccountDTO queryUserInfo(Long id) {
-		return accountMapper.queryUserInfo(id);
+	public String queryUserInfo(HttpServletRequest request) {
+		return "id: " + SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 	}
-
-	@Override
-	public Boolean checkUsernameExist(String username) {
-		return accountMapper.checkUsernameExist(username) > 0 ? true : false;
-	}
-	
 }

@@ -46,4 +46,18 @@ public interface AccountMapper {
 	@Select("SELECT count(1) FROM account WHERE user_name = #{username} AND status = '1'")
 	public int checkUsernameExist(@Param("username") String username);
 	
+	@Select("SELECT * FROM account WHERE user_name = #{username}")
+	@Results({
+        @Result(property = "id", column = "id"),
+        @Result(property = "username", column = "user_name"),
+        @Result(property = "password", column = "password"),
+        @Result(property = "emailAddress", column = "email_Address")
+	})
+	public AccountDTO queryUserInfoByUsername(@Param("username") String username);
+	
+	@Select("SELECT count(1) FROM account WHERE id = #{id} AND status = '1'")
+	public int checkUserIdExist(@Param("id") Long id);
+	
+	@Select("SELECT user_name FROM account WHERE id = #{id} AND status = '1'")
+	public String queryUsernameById(@Param("id") Long id);
 }

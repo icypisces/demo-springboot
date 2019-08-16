@@ -17,10 +17,10 @@ public class PracticeOneJPAController {
 	@Autowired
 	private AccountServiceImpl accountService;
 	
-	@SuppressWarnings({ "deprecation", "rawtypes" })
+	@SuppressWarnings("rawtypes")
 	@RequestMapping("/list")
 	public ResponseEntity list() {
-		return ResponseEntity.ok(accountService.list(new PageRequest(1,4,new Sort(Sort.Direction.ASC, "id"))));
+		return ResponseEntity.ok(accountService.list(PageRequest.of(1,4,new Sort(Sort.Direction.ASC, "id"))));
 	}
 	
 	@RequestMapping("/save")
